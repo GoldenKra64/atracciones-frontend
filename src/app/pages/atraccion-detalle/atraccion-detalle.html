@@ -1,0 +1,143 @@
+<div class="page-detalle">
+  <div class="container">
+    <a routerLink="/atracciones" class="back-link">← Volver a Atracciones</a>
+
+    <div class="loading-state" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Cargando...</p>
+    </div>
+
+    <div class="error-state" *ngIf="error && !loading">
+      <p>⚠️ {{ error }}</p>
+    </div>
+
+    <div class="detalle-content" *ngIf="atraccion && !loading">
+      <!-- Galería -->
+      <section class="galeria">
+        <div class="main-image">
+          <img [src]="atraccion.imagenes[selectedImg]" [alt]="atraccion.nombre" />
+        </div>
+        <div class="thumbnails" *ngIf="atraccion.imagenes.length > 1">
+          <div class="thumb" *ngFor="let img of atraccion.imagenes; let i = index"
+               [class.active]="i === selectedImg" (click)="selectedImg = i">
+            <img [src]="img" [alt]="'Imagen ' + (i+1)" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Info principal -->
+      <section class="info-grid">
+        <div class="info-main">
+          <!-- TABS -->
+          <div class="tabs">
+            <button class="tab-btn" [class.active]="activeTab === 'info'" (click)="activeTab = 'info'">Información</button>
+            <button class="tab-btn" [class.active]="activeTab === 'resenas'" (click)="activeTab = 'resenas'">Reseñas</button>
+          </div>
+
+          <!-- CONTENIDO INFO -->
+          <div class="tab-content" *ngIf="activeTab === 'info'">
+            <h1 class="detalle-titulo">{{ atraccion.nombre }}</h1>
+            <p class="detalle-desc">{{ atraccion.descripcion }}</p>
+
+          <!-- Incluye / No incluye -->
+          <div class="include-grid" *ngIf="atraccion.incluye.length > 0 || atraccion.no_incluye.length > 0">
+            <div class="include-box" *ngIf="atraccion.incluye.length > 0">
+              <h4>✅ Incluye</h4>
+              <ul>
+                <li *ngFor="let item of atraccion.incluye">{{ item }}</li>
+              </ul>
+            </div>
+            <div class="include-box no" *ngIf="atraccion.no_incluye.length > 0">
+              <h4>❌ No incluye</h4>
+              <ul>
+                <li *ngFor="let item of atraccion.no_incluye">{{ item }}</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Tags extras -->
+          <div class="extras">
+            <span class="extra-tag" *ngIf="atraccion.incluye_transporte">🚌 Transporte incluido</span>
+            <span class="extra-tag" *ngIf="atraccion.incluye_acompaniante">👤 Acompañante incluido</span>
+            <span class="extra-tag" *ngIf="atraccion.punto_encuentro">📍 {{ atraccion.punto_encuentro }}</span>
+          </div>
+          </div> <!-- End Tab Info -->
+
+          <!-- CONTENIDO RESEÑAS -->
+          <div class="tab-content" *ngIf="activeTab === 'resenas'">
+             <div class="resenas-list">
+               <div *ngIf="loadingResenas" class="loading-state">
+                 <div class="spinner"></div>
+               </div>
+               <div *ngIf="!loadingResenas && resenas.length === 0" class="empty-state">
+                 <p>No hay reseñas para esta atracción todavía.</p>
+               </div>
+               <div class="resena-item" *ngFor="let r of resenas">
+                 <div class="resena-header">
+                   <span class="stars">
+                     <ng-container *ngFor="let s of [1,2,3,4,5]">
+                        <span class="star" [class.filled]="s <= r.calificacion">★</span>
+                     </ng-container>
+                   </span>
+                   <span class="resena-fecha">{{ r.fecha | date:'dd/MM/yyyy' }}</span>
+                 </div>
+                 <p class="resena-comentario" *ngIf="r.comentario">{{ r.comentario }}</p>
+               </div>
+             </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="info-sidebar">
+          <!-- Horarios -->
+          <div class="sidebar-card" *ngIf="atraccion.horarios_proximos.length > 0">
+            <h3>🗓️ Horarios disponibles</h3>
+            <div class="horario-item selectable" *ngFor="let h of atraccion.horarios_proximos"
+                 [class.selected]="horarioSeleccionado?.horarioId === h.horarioId"
+                 (click)="seleccionarHorario(h)">
+              <div class="horario-fecha">{{ h.fecha | date:'dd/MM/yyyy' }}</div>
+              <div class="horario-hora">{{ h.horaInicio }} – {{ h.horaFin }}</div>
+              <div class="horario-cupos">{{ h.cupos }} cupos</div>
+            </div>
+          </div>
+
+          <!-- Tickets -->
+          <div class="sidebar-card" *ngIf="horarioSeleccionado && getTicketsPorHorario().length > 0">
+            <h3>🎟️ Tickets</h3>
+            <div class="ticket-item selectable" *ngFor="let t of getTicketsPorHorario()">
+              <div class="ticket-info">
+                <span class="ticket-tipo">{{ t.tipo }}</span>
+                <span class="ticket-precio">{{ t.precio | currency:t.moneda:'symbol':'1.2-2' }}</span>
+              </div>
+              <div class="ticket-controls">
+                <button type="button" (click)="decrementar(t.tckGuid)">-</button>
+                <span>{{ cantidades[t.tckGuid] }}</span>
+                <button type="button" (click)="incrementar(t.tckGuid)">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Boton Reservar -->
+          <div class="reserva-action" *ngIf="horarioSeleccionado">
+            <button class="btn-reservar" [disabled]="totalTickets === 0 || reserving" (click)="reservar()">
+              <span *ngIf="!reserving">Reservar ({{ totalTickets }})</span>
+              <div class="spinner-small" *ngIf="reserving"></div>
+            </button>
+          </div>
+        </aside>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-content" [class.success]="modalSuccess" [class.error]="!modalSuccess">
+      <div class="modal-icon">
+        <span *ngIf="modalSuccess">✔️</span>
+        <span *ngIf="!modalSuccess">❌</span>
+      </div>
+      <p class="modal-message">{{ modalMsg }}</p>
+      <button class="btn-cerrar" (click)="cerrarModal()">Cerrar</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<div class="home">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="grid-lines"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Reservas · Experiencias · Aventuras</p>
+      <h1 class="hero-title">
+        Vive la<br>
+        <span class="gold">experiencia</span><br>
+        que mereces
+      </h1>
+      <p class="hero-desc">
+        Descubre los mejores tours, atracciones y experiencias culturales
+        en Ecuador y más allá. Reserva en minutos, vive para siempre.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/atracciones" class="btn-primary">Explorar Atracciones</a>
+        <a routerLink="/ingresar" class="btn-ghost">Crear Cuenta</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="https://thumbs.dreamstime.com/b/cityscape-quito-capital-ecuador-around-andes-mountains-basilica-del-voto-nacional-el-panecillo-hill-343565281.jpg" alt="Quito" />
+      <div class="image-overlay"></div>
+      <div class="image-badge">
+        <span class="badge-num">50+</span>
+        <span class="badge-label">Experiencias</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="container">
+      <p class="section-label">¿Por qué Atraxia?</p>
+      <h2 class="section-title">Todo lo que necesitas<br>para tu próxima aventura</h2>
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let f of features">
+          <div class="feature-icon">{{ f.icon }}</div>
+          <h3>{{ f.title }}</h3>
+          <p>{{ f.desc }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <h2>¿Listo para explorar?</h2>
+        <p>Miles de aventuras te esperan. Comienza hoy.</p>
+        <a routerLink="/atracciones" class="btn-primary">Ver todas las atracciones</a>
+      </div>
+    </div>
+  </section>
+</div>

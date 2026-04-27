@@ -1,0 +1,54 @@
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(5,5,10,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,180,50,0.15);
+}
+.nav-inner {
+  max-width: 1300px; margin: 0 auto; padding: 0 2rem;
+  height: 70px; display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
+  letter-spacing: 4px; color: #fff; text-decoration: none;
+  .logo-a { color: #FFB432; font-size: 2.1rem; }
+}
+.nav-links {
+  display: flex; align-items: center; gap: 2.5rem; list-style: none; margin: 0; padding: 0;
+  a {
+    font-family: 'Manrope', sans-serif; font-size: 0.85rem; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.65); text-decoration: none;
+    transition: color 0.2s;
+    &:hover, &.active { color: #FFB432; }
+  }
+  .nav-cta {
+    border: 1px solid #FFB432; padding: 0.45rem 1.2rem; border-radius: 2px; color: #FFB432 !important;
+    &:hover { background: #FFB432; color: #05050A !important; }
+  }
+}
+.nav-user {
+  display: flex; align-items: center; gap: 1rem;
+  .username { font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; color: #FFB432; text-transform: uppercase; }
+  .logout-btn {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    background: transparent; border: 1px solid rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.5); padding: 0.4rem 0.9rem; border-radius: 2px; cursor: pointer;
+    transition: all 0.2s;
+    &:hover { border-color: #ff4444; color: #ff4444; }
+  }
+}
+.hamburger {
+  display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer;
+  span { display: block; width: 24px; height: 2px; background: #fff; transition: all 0.3s; }
+  &.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  &.open span:nth-child(2) { opacity: 0; }
+  &.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+  .nav-links {
+    display: none; position: fixed; top: 70px; left: 0; right: 0;
+    background: rgba(5,5,10,0.97); flex-direction: column; padding: 2rem; gap: 1.5rem;
+    border-bottom: 1px solid rgba(255,180,50,0.15);
+    &.open { display: flex; }
+  }
+}

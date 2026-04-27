@@ -1,0 +1,89 @@
+<div class="page-atracciones">
+  <div class="page-header">
+    <div class="container">
+      <p class="section-label">Catálogo</p>
+      <h1 class="page-title">Atracciones</h1>
+      <p class="page-desc">Descubre experiencias únicas filtradas a tu medida</p>
+    </div>
+  </div>
+
+  <div class="container main-layout">
+    <!-- Filtros -->
+    <aside class="filtros-panel">
+      <h3>Filtros</h3>
+      <div class="filtro-group">
+        <label>Ciudad</label>
+        <input type="text" [(ngModel)]="filtros.Ciudad" placeholder="Ej: quito" />
+      </div>
+      <div class="filtro-group">
+        <label>País</label>
+        <input type="text" [(ngModel)]="filtros.Pais" placeholder="Ej: ecuador" />
+      </div>
+      <div class="filtro-group">
+        <label>Disponibilidad</label>
+        <select [(ngModel)]="filtros.Disponible">
+          <option value="">Todas</option>
+          <option value="true">Disponibles</option>
+          <option value="false">No disponibles</option>
+        </select>
+      </div>
+      <button class="btn-filtrar" (click)="buscar()">Buscar</button>
+      <button class="btn-limpiar" (click)="limpiar()">Limpiar filtros</button>
+    </aside>
+
+    <!-- Resultados -->
+    <section class="resultados">
+      <div class="resultados-header" *ngIf="!loading && !error">
+        <span class="count">{{ totalRecords }} resultado{{ totalRecords !== 1 ? 's' : '' }}</span>
+      </div>
+
+      <div class="loading-state" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>Cargando atracciones...</p>
+      </div>
+
+      <div class="error-state" *ngIf="error && !loading">
+        <p>⚠️ {{ error }}</p>
+        <button (click)="cargar()">Reintentar</button>
+      </div>
+
+      <div class="cards-grid" *ngIf="!loading && !error">
+        <a *ngFor="let item of items" [routerLink]="['/atracciones', item.id]" class="card">
+          <div class="card-image">
+            <img [src]="item.imagen_principal || 'https://via.placeholder.com/400x250'" [alt]="item.nombre" />
+            <div class="card-disponible" [class.disponible]="item.disponible" [class.no-disponible]="!item.disponible">
+              {{ item.disponible ? 'Disponible' : 'No disponible' }}
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="card-tipo">{{ item.tipo_nombre }}</p>
+            <h3 class="card-nombre">{{ item.nombre }}</h3>
+            <p class="card-lugar">📍 {{ item.ciudad }}, {{ item.pais }}</p>
+            <p class="card-desc">{{ item.descripcion_corta }}</p>
+            <div class="card-footer">
+              <div class="card-rating">
+                <span class="stars">{{ estrellas(item.calificacion).join('') }}</span>
+                <span class="reviews">({{ item.total_resenias }})</span>
+              </div>
+              <div class="card-precio">
+                <span class="desde">Desde</span>
+                <span class="precio">{{ item.precio_desde | currency:'USD':'symbol':'1.0-2' }}</span>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        <div class="empty-state" *ngIf="items.length === 0 && !loading">
+          <p>🔍 No se encontraron atracciones con esos filtros</p>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination" *ngIf="totalPages > 1 && !loading">
+        <button [disabled]="!hasPrev" (click)="prevPage()">← Anterior</button>
+        <span>{{ filtros.PageNumber }} / {{ totalPages }}</span>
+        <button [disabled]="!hasNext" (click)="nextPage()">Siguiente →</button>
+      </div>
+    </section>
+  </div>
+</div>

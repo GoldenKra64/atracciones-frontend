@@ -1,0 +1,87 @@
+<div class="page-ingresar">
+  <div class="auth-container">
+    <div class="auth-logo"><span class="logo-a">A</span>TRAXIA</div>
+    <p class="auth-subtitle">Tu plataforma de experiencias únicas</p>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button [class.active]="tab === 'login'" (click)="tab='login'; mensaje=''">Iniciar sesión</button>
+      <button [class.active]="tab === 'registro'" (click)="tab='registro'; mensaje=''">Crear cuenta</button>
+    </div>
+
+    <!-- Mensaje -->
+    <div class="msg" *ngIf="mensaje" [class.error]="esError" [class.success]="!esError">
+      {{ mensaje }}
+    </div>
+
+    <!-- LOGIN -->
+    <form *ngIf="tab === 'login'" (ngSubmit)="onLogin()" class="auth-form">
+      <div class="field">
+        <label>Usuario</label>
+        <input type="text" [(ngModel)]="login.login" name="login" placeholder="Tu nombre de usuario" />
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" [(ngModel)]="login.password" name="password" placeholder="••••••••" />
+      </div>
+      <button type="submit" class="btn-submit" [disabled]="loading">
+        {{ loading ? 'Ingresando...' : 'Ingresar' }}
+      </button>
+    </form>
+
+    <!-- REGISTRO -->
+    <form *ngIf="tab === 'registro'" (ngSubmit)="onRegistro()" class="auth-form">
+      <div class="form-section-label">Datos de acceso</div>
+      <div class="field">
+        <label>Usuario</label>
+        <input type="text" [(ngModel)]="registro.login" name="reg_login" placeholder="Elige un usuario" />
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" [(ngModel)]="registro.password" name="reg_pass" placeholder="••••••••" />
+      </div>
+
+      <div class="form-section-label">Datos personales</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Nombres</label>
+          <input type="text" [(ngModel)]="registro.cliente.nombres" name="nombres" placeholder="Juan" />
+        </div>
+        <div class="field">
+          <label>Apellidos</label>
+          <input type="text" [(ngModel)]="registro.cliente.apellidos" name="apellidos" placeholder="Pérez" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input type="email" [(ngModel)]="registro.cliente.correo" name="correo" placeholder="juan@correo.com" />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Tipo de ID</label>
+          <select [(ngModel)]="registro.cliente.tipoIdentificacion" name="tipoId">
+            <option value="CC">Cédula</option>
+            <option value="PASS">Pasaporte</option>
+            <option value="RUC">RUC</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Número de ID</label>
+          <input type="text" [(ngModel)]="registro.cliente.numeroIdentificacion" name="numId" placeholder="1234567890" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input type="tel" [(ngModel)]="registro.cliente.telefono" name="telefono" placeholder="+593 99 999 9999" />
+      </div>
+      <div class="field">
+        <label>Dirección</label>
+        <input type="text" [(ngModel)]="registro.cliente.direccion" name="direccion" placeholder="Calle, Ciudad" />
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="loading">
+        {{ loading ? 'Creando cuenta...' : 'Crear cuenta' }}
+      </button>
+    </form>
+  </div>
+</div>

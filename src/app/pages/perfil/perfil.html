@@ -1,0 +1,87 @@
+<div class="page-perfil">
+  <div class="container">
+    <div class="header">
+      <h1 class="page-title">Mi Perfil</h1>
+      <p class="page-desc">Administra tu información personal y revisa tu historial de compras.</p>
+    </div>
+
+    <div class="loading-state" *ngIf="loading">
+      <div class="spinner"></div>
+      <p>Cargando datos...</p>
+    </div>
+
+    <div class="error-state" *ngIf="error && !loading">
+      <p>⚠️ {{ error }}</p>
+      <button class="btn-reintentar" (click)="cargarDatos()">Reintentar</button>
+    </div>
+
+    <div class="perfil-layout" *ngIf="!loading && !error && profile">
+      <!-- Datos del Usuario -->
+      <section class="perfil-card">
+        <h3>Información Personal</h3>
+        <div class="datos-grid">
+          <div class="dato-item">
+            <span class="label">Nombres</span>
+            <span class="valor">{{ profile.nombres }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Apellidos</span>
+            <span class="valor">{{ profile.apellidos }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Identificación</span>
+            <span class="valor">{{ profile.numeroIdentificacion }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Correo Electrónico</span>
+            <span class="valor">{{ profile.correo }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Teléfono</span>
+            <span class="valor">{{ profile.telefono || 'No registrado' }}</span>
+          </div>
+          <div class="dato-item">
+            <span class="label">Dirección</span>
+            <span class="valor">{{ profile.direccion || 'No registrada' }}</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Facturas -->
+      <section class="facturas-card">
+        <h3>Historial de Facturas</h3>
+        
+        <div class="empty-state" *ngIf="facturas.length === 0">
+          <p>Aún no tienes facturas registradas.</p>
+        </div>
+
+        <div class="table-responsive" *ngIf="facturas.length > 0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Número</th>
+                <th>Fecha Emisión</th>
+                <th>Canal</th>
+                <th>Estado</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let f of facturas">
+                <td>#{{ f.numero }}</td>
+                <td>{{ f.fechaEmision | date:'dd/MM/yyyy' }}</td>
+                <td><span class="tag-canal">{{ f.origenCanal }}</span></td>
+                <td>
+                  <span class="tag-estado" [class.act]="f.estado === 'ACT'" [class.anu]="f.estado === 'ANU'">
+                    {{ f.estado }}
+                  </span>
+                </td>
+                <td class="td-total">{{ f.total | currency:'USD':'symbol':'1.2-2' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

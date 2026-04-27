@@ -1,0 +1,19 @@
+<nav class="navbar">
+  <div class="nav-inner">
+    <a routerLink="/" class="nav-logo"><span class="logo-a">A</span>TRAXIA</a>
+    <button class="hamburger" (click)="toggleMenu()" [class.open]="menuOpen">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" [class.open]="menuOpen">
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="menuOpen=false">Home</a></li>
+      <li><a routerLink="/atracciones" routerLinkActive="active" (click)="menuOpen=false">Atracciones</a></li>
+      <li *ngIf="!currentUser"><a routerLink="/ingresar" routerLinkActive="active" (click)="menuOpen=false" class="nav-cta">Ingresar</a></li>
+      <li *ngIf="currentUser" class="nav-user">
+        <a routerLink="/perfil" class="username" routerLinkActive="active" (click)="menuOpen=false" style="text-decoration:none; cursor:pointer;">
+          {{ currentUser.username }}
+        </a>
+        <button class="logout-btn" (click)="logout()">Salir</button>
+      </li>
+    </ul>
+  </div>
+</nav>

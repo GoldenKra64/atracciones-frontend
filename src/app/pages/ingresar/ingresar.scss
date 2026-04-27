@@ -1,0 +1,74 @@
+.page-ingresar {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: radial-gradient(ellipse at 60% 0%, rgba(255,180,50,0.06), transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(255,107,43,0.04), transparent 50%), #05050A;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 520px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  padding: 3rem;
+}
+
+.auth-logo {
+  font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem;
+  letter-spacing: 4px; text-align: center; margin-bottom: 0.25rem;
+  .logo-a { color: #FFB432; }
+}
+.auth-subtitle { text-align: center; font-size: 0.8rem; color: rgba(255,255,255,0.35); letter-spacing: 1px; margin-bottom: 2rem; }
+
+.auth-tabs {
+  display: flex; background: rgba(255,255,255,0.04); border-radius: 3px; padding: 4px;
+  margin-bottom: 1.5rem;
+  button {
+    flex: 1; background: transparent; border: none; color: rgba(255,255,255,0.4);
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 0.65rem; border-radius: 2px; cursor: pointer; transition: all 0.2s;
+    &.active { background: rgba(255,180,50,0.15); color: #FFB432; }
+  }
+}
+
+.msg {
+  border-radius: 3px; padding: 0.75rem 1rem; font-size: 0.85rem; margin-bottom: 1.25rem;
+  &.error { background: rgba(255,60,60,0.1); border: 1px solid rgba(255,60,60,0.25); color: #FF6060; }
+  &.success { background: rgba(50,200,100,0.1); border: 1px solid rgba(50,200,100,0.25); color: #32C864; }
+}
+
+.auth-form { display: flex; flex-direction: column; gap: 1rem; }
+
+.form-section-label {
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: #FFB432; margin-top: 0.5rem;
+}
+
+.field {
+  display: flex; flex-direction: column; gap: 0.4rem;
+  label { font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+  input, select {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+    color: #fff; padding: 0.7rem 0.9rem; border-radius: 2px; font-size: 0.9rem; font-family: inherit;
+    transition: border-color 0.2s;
+    &:focus { outline: none; border-color: #FFB432; }
+    option { background: #1a1a2a; }
+    &::placeholder { color: rgba(255,255,255,0.2); }
+  }
+}
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+.btn-submit {
+  background: #FFB432; color: #05050A; border: none;
+  font-family: inherit; font-weight: 700; font-size: 0.85rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.9rem; border-radius: 2px; margin-top: 0.5rem; cursor: pointer;
+  transition: background 0.2s;
+  &:hover:not(:disabled) { background: #ffc85a; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
