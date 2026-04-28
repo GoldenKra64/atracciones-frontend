@@ -1,0 +1,110 @@
+<div class="admin-page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin/dashboard" class="back-link">← Dashboard</a>
+      <div class="header-title">
+        <span class="header-emoji">🗺️</span>
+        <div>
+          <h1>Destinos</h1>
+          <p class="header-subtitle">Gestión de destinos turísticos</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn-crear" (click)="irACrear()">
+      <span class="btn-icon">＋</span> Nuevo destino
+    </button>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" [class.visible]="toast.visible" [class.toast-success]="toast.type === 'success'" [class.toast-error]="toast.type === 'error'">
+    <span>{{ toast.type === 'success' ? '✅' : '❌' }}</span>
+    {{ toast.message }}
+  </div>
+
+  <!-- Estados de carga y error -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando destinos...</p>
+  </div>
+
+  <div class="error-state" *ngIf="error && !loading">
+    <span class="error-icon">⚠️</span>
+    <p>{{ error }}</p>
+    <button (click)="cargar()">Reintentar</button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-wrapper" *ngIf="!loading && !error">
+
+    <div class="table-meta">
+      <span class="record-count">{{ destinos.length }} registro{{ destinos.length !== 1 ? 's' : '' }}</span>
+    </div>
+
+    <div class="empty-state" *ngIf="destinos.length === 0">
+      <span>🌐</span>
+      <p>No hay destinos registrados</p>
+      <button class="btn-crear-empty" (click)="irACrear()">Crear primer destino</button>
+    </div>
+
+    <table *ngIf="destinos.length > 0">
+      <thead>
+        <tr>
+          <th class="col-id">ID</th>
+          <th class="col-nombre">Nombre</th>
+          <th class="col-pais">País</th>
+          <th class="col-acciones">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of destinos" class="table-row">
+          <td class="col-id">
+            <span class="id-badge">{{ d.id }}</span>
+          </td>
+          <td class="col-nombre">
+            <span class="nombre-text">{{ d.nombre | titlecase }}</span>
+          </td>
+          <td class="col-pais">
+            <span class="pais-badge">
+              🌎 {{ d.pais | titlecase }}
+            </span>
+          </td>
+          <td class="col-acciones">
+            <div class="acciones-wrap">
+              <button class="btn-editar" (click)="irAEditar(d.id)" title="Actualizar destino">
+                ✏️ Editar
+              </button>
+              <button class="btn-eliminar" (click)="abrirConfirmDelete(d)" title="Eliminar destino">
+                🗑️ Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal confirmación de eliminación -->
+  <div class="modal-overlay" *ngIf="confirmDelete.open" (click)="cerrarConfirmDelete()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-icon">🗑️</div>
+      <h3 class="modal-title">Eliminar destino</h3>
+      <p class="modal-desc">
+        ¿Estás seguro de que deseas eliminar
+        <strong>{{ confirmDelete.destino?.nombre | titlecase }}</strong>?
+        Esta acción no se puede deshacer.
+      </p>
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="cerrarConfirmDelete()" [disabled]="confirmDelete.loading">
+          Cancelar
+        </button>
+        <button class="btn-confirm-delete" (click)="confirmarEliminar()" [disabled]="confirmDelete.loading">
+          <span *ngIf="!confirmDelete.loading">Eliminar</span>
+          <span *ngIf="confirmDelete.loading">Eliminando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

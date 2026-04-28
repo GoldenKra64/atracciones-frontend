@@ -1,0 +1,105 @@
+<div class="admin-page">
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin/tickets" class="back-link">← Volver a Tickets</a>
+      <div class="header-title">
+        <span class="header-emoji">🎫</span>
+        <div>
+          <h1>{{ isEdit ? 'Actualizar Ticket' : 'Crear Ticket' }}</h1>
+          <p class="header-subtitle">Completa el formulario para {{ isEdit ? 'actualizar el' : 'crear un nuevo' }} ticket.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" [class.visible]="toast.visible" [class.toast-success]="toast.type === 'success'" [class.toast-error]="toast.type === 'error'">
+    <span>{{ toast.type === 'success' ? '✅' : '❌' }}</span>
+    {{ toast.message }}
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <div class="form-wrapper" *ngIf="!loading">
+    
+    <div class="error-banner" *ngIf="error">
+      <span class="error-icon">⚠️</span>
+      {{ error }}
+    </div>
+
+    <div class="error-banner validation-errors" *ngIf="validationErrors.length > 0">
+      <span class="error-icon">⚠️</span>
+      <ul>
+        <li *ngFor="let err of validationErrors">{{ err }}</li>
+      </ul>
+    </div>
+
+    <form (ngSubmit)="guardar()" #ticketForm="ngForm" class="admin-form">
+      
+      <div class="form-group">
+        <label for="horarioId">Horario <span class="required">*</span></label>
+        <select 
+          id="horarioId" 
+          name="horarioId" 
+          [(ngModel)]="payload.horarioId" 
+          required
+          class="form-control"
+        >
+          <option *ngFor="let h of horarios" [value]="h.horarioId">{{ getHorarioLabel(h) }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="nombre">Nombre <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="nombre" 
+          name="nombre" 
+          [(ngModel)]="payload.nombre" 
+          required 
+          placeholder="Ej: Tour Junior"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="precio">Precio <span class="required">*</span></label>
+        <input 
+          type="number" 
+          id="precio" 
+          name="precio" 
+          [(ngModel)]="payload.precio" 
+          required 
+          step="0.01"
+          min="0"
+          placeholder="Ej: 20.99"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="tipo">Tipo <span class="required">*</span></label>
+        <select 
+          id="tipo" 
+          name="tipo" 
+          [(ngModel)]="payload.tipo" 
+          required
+          class="form-control"
+        >
+          <option *ngFor="let t of tipos" [value]="t">{{ t }}</option>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" routerLink="/admin/tickets" [disabled]="saving">Cancelar</button>
+        <button type="submit" class="btn-submit" [disabled]="saving || !ticketForm.form.valid">
+          <span *ngIf="!saving">{{ isEdit ? 'Actualizar Ticket' : 'Crear Ticket' }}</span>
+          <span *ngIf="saving">Guardando...</span>
+        </button>
+      </div>
+      
+    </form>
+  </div>
+</div>

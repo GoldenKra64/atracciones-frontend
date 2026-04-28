@@ -1,0 +1,272 @@
+// ── Variables ────────────────────────────────────────────────────────────────
+$gold:       #FFB432;
+$gold-dim:   rgba(255, 180, 50, 0.15);
+$gold-line:  rgba(255, 180, 50, 0.12);
+$surface:    rgba(255, 255, 255, 0.03);
+$border:     rgba(255, 255, 255, 0.07);
+$text-muted: rgba(255, 255, 255, 0.45);
+$red:        #FF5252;
+$red-dim:    rgba(255, 82, 82, 0.12);
+$green:      #34D399;
+$green-dim:  rgba(52, 211, 153, 0.1);
+
+// ── Page shell ───────────────────────────────────────────────────────────────
+.admin-page {
+  min-height: 100vh;
+  background: #03030A;
+  padding: 2.5rem 2.5rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+// ── Header ───────────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.back-link {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: $text-muted;
+  text-decoration: none;
+  transition: color 0.2s;
+  &:hover { color: $gold; }
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .header-emoji { font-size: 2rem; }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+    color: #fff;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .header-subtitle {
+    font-size: 0.75rem;
+    color: $text-muted;
+    letter-spacing: 1px;
+    margin-top: 0.2rem;
+  }
+}
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+.toast {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  &.toast-success {
+    background: rgba(52, 211, 153, 0.12);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: $green;
+  }
+
+  &.toast-error {
+    background: $red-dim;
+    border: 1px solid rgba(255, 82, 82, 0.3);
+    color: $red;
+  }
+}
+
+// ── Loading ───────────────────────────────────────────────────────────────────
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 0;
+  gap: 1rem;
+  color: $text-muted;
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid $gold-dim;
+  border-top-color: $gold;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+// ── Form Area ─────────────────────────────────────────────────────────────────
+.form-wrapper {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 600px;
+}
+
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: $red-dim;
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  color: $red;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+
+  .error-icon { font-size: 1.2rem; }
+}
+
+.validation-errors {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  ul {
+    margin: 0;
+    padding-left: 1.5rem;
+  }
+  li {
+    margin-bottom: 0.2rem;
+  }
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+    
+    .required { color: $gold; }
+  }
+
+  .form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid $border;
+    border-radius: 4px;
+    padding: 0.8rem 1rem;
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: rgba(255, 180, 50, 0.5);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(255, 180, 50, 0.1);
+    }
+  }
+
+  .form-hint {
+    font-size: 0.75rem;
+    color: $text-muted;
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.btn-cancel {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid $border;
+  color: $text-muted;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) { border-color: rgba(255,255,255,0.25); color: #fff; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.btn-submit {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: $gold;
+  border: none;
+  color: #03030A;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) { 
+    background: #ffc85a; 
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 180, 50, 0.3);
+  }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+@media (max-width: 640px) {
+  .admin-page { padding: 1.5rem 1rem 4rem; }
+  .form-wrapper { padding: 1.5rem; }
+  .form-actions { flex-direction: column-reverse; }
+  .btn-cancel, .btn-submit { width: 100%; text-align: center; }
+}

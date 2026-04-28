@@ -1,0 +1,272 @@
+.admin-dashboard {
+  min-height: 100vh;
+  background: #03030A;
+  display: flex;
+  flex-direction: column;
+}
+
+// ── Topbar ────────────────────────────────────────────────────────────────────
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(3, 3, 10, 0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 180, 50, 0.12);
+}
+
+.topbar-inner {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .brand-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    color: #fff;
+    .gold { color: #FFB432; }
+  }
+
+  .brand-sep {
+    color: rgba(255, 255, 255, 0.15);
+    font-size: 1.2rem;
+  }
+
+  .brand-panel {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255, 180, 50, 0.65);
+  }
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.admin-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .admin-avatar { font-size: 1rem; }
+
+  .admin-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+  }
+}
+
+.btn-logout {
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+  padding: 0.4rem 0.9rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: rgba(255, 80, 80, 0.4);
+    color: #ff6060;
+  }
+}
+
+// ── Main ──────────────────────────────────────────────────────────────────────
+.dashboard-main {
+  flex: 1;
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 5rem;
+}
+
+.dash-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.dash-eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #FFB432;
+  margin-bottom: 0.5rem;
+}
+
+.dash-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+}
+
+.dash-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.5;
+}
+
+.dash-header-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  border-radius: 4px;
+  padding: 0.6rem 1.1rem;
+  flex-shrink: 0;
+
+  .badge-icon { font-size: 1rem; }
+
+  .badge-text {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #34D399;
+  }
+}
+
+// ── Cards ─────────────────────────────────────────────────────────────────────
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.dash-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 1.75rem;
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.3s, transform 0.25s, box-shadow 0.3s;
+  animation: fadeSlideUp 0.5s ease both;
+
+  &:hover {
+    border-color: rgba(var(--card-color-rgb, 255, 180, 50), 0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(var(--card-color-rgb, 255, 180, 50), 0.08);
+
+    .card-glow { opacity: 1; }
+    .card-arrow { opacity: 1; transform: translateX(0); color: var(--card-color); }
+    .card-emoji-main { transform: scale(1.15) rotate(-5deg); }
+  }
+}
+
+.card-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top left, var(--card-color), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.card-emoji-main {
+  font-size: 2.5rem;
+  transition: transform 0.3s;
+  display: block;
+}
+
+.card-emoji-accent {
+  font-size: 1.1rem;
+  opacity: 0.45;
+}
+
+.card-body {
+  margin-bottom: 1.5rem;
+}
+
+.card-titulo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: var(--card-color);
+  margin-bottom: 0.5rem;
+}
+
+.card-desc {
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.card-arrow {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.2);
+  opacity: 0.5;
+  transform: translateX(-4px);
+  transition: all 0.3s;
+  text-align: right;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Coming soon ───────────────────────────────────────────────────────────────
+.coming-soon {
+  text-align: center;
+  margin-top: 3rem;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 640px) {
+  .cards-grid { grid-template-columns: 1fr 1fr; }
+  .dash-header { flex-direction: column; }
+}
+
+@media (max-width: 400px) {
+  .cards-grid { grid-template-columns: 1fr; }
+}

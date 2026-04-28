@@ -41,6 +41,38 @@ export class AuthService {
     }
   }
 
+  async adminLogin(payload: { login: string, password: string } ): Promise<{ success: boolean; message: string }> {
+    try {
+      const res = await api.post('/Auth/login-admin', payload);
+      const data = res.data?.data;
+      if (!data?.success || !data?.token) {
+        return { success: false, message: data?.message || 'Credenciales incorrectas' };
+      }
+      localStorage.setItem('atraxia_admin_token', data.token);
+      localStorage.setItem('atraxia_admin_user', data.username);
+
+      return { success: true, message: 'Bienvenido al panel de administración' };
+    } catch (err: any) {
+      if (err.response?.status === 403) {
+        return { success: false, message: 'Acceso denegado: no tienes permisos de administrador' };
+      } 
+      return { success: false, message: 'No se pudo validar el acceso de administrador' };
+    }
+  }
+ 
+  get isAdmin(): boolean {
+    return !!localStorage.getItem('atraxia_admin_token');
+  }
+ 
+  get adminUsername(): string {
+    return localStorage.getItem('atraxia_admin_user') || '';
+  }
+ 
+  adminLogout(): void {
+    localStorage.removeItem('atraxia_admin_token');
+    localStorage.removeItem('atraxia_admin_user');
+  }
+
   logout() {
     localStorage.removeItem('atraxia_token');
     localStorage.removeItem('atraxia_user');

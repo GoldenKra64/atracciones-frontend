@@ -4,6 +4,23 @@ import { AtraccionesComponent } from './pages/atracciones/atracciones';
 import { AtraccionDetalleComponent } from './pages/atraccion-detalle/atraccion-detalle';
 import { IngresarComponent } from './pages/ingresar/ingresar';
 import { PerfilComponent } from './pages/perfil/perfil';
+import { AdminLoginComponent } from './pages/admin/admin-login/admin-login';
+import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard';
+import { AdminDestinoComponent } from './pages/admin/destino/admin-destino';
+import { AdminDestinoFormsComponent } from './pages/admin/destino-forms/admin-destino-forms';
+import { AdminClientesComponent } from './pages/admin/clientes/admin-clientes';
+import { AdminClientesFormsComponent } from './pages/admin/clientes-forms/admin-clientes-forms';
+import { AdminFacturasComponent } from './pages/admin/facturas/admin-facturas';
+import { AdminHorariosComponent } from './pages/admin/horarios/admin-horarios';
+import { AdminHorariosFormsComponent } from './pages/admin/horarios-forms/admin-horarios-forms';
+import { AdminIncluyeComponent } from './pages/admin/incluye/admin-incluye';
+import { AdminIncluyeFormsComponent } from './pages/admin/incluye-forms/admin-incluye-forms';
+import { AdminNoIncluyeComponent } from './pages/admin/noincluye/admin-noincluye';
+import { AdminNoIncluyeFormsComponent } from './pages/admin/noincluye-forms/admin-noincluye-forms';
+import { AdminImagenFormsComponent } from './pages/admin/imagen-forms/admin-imagen-forms';
+import { AdminImagenComponent } from './pages/admin/imagen/admin-imagen';
+import { AdminTicketsComponent } from './pages/admin/tickets/admin-tickets';
+import { AdminTicketsFormsComponent } from './pages/admin/tickets-forms/admin-tickets-forms';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -11,5 +28,30 @@ export const routes: Routes = [
   { path: 'atracciones/:id', component: AtraccionDetalleComponent },
   { path: 'ingresar', component: IngresarComponent },
   { path: 'perfil', component: PerfilComponent },
+  { path: 'admin', component: AdminLoginComponent },
+  { path: 'admin/dashboard', component: AdminDashboardComponent },
+  { path: 'admin/destinos', component: AdminDestinoComponent },
+  { path: 'admin/destino-forms', component: AdminDestinoFormsComponent },
+  { path: 'admin/destino-forms/:id', component: AdminDestinoFormsComponent },
+  { path: 'admin/clientes', component: AdminClientesComponent },
+  { path: 'admin/clientes-forms', component: AdminClientesFormsComponent },
+  { path: 'admin/clientes-forms/:id', component: AdminClientesFormsComponent },
+  { path: 'admin/facturas', component: AdminFacturasComponent },
+  { path: 'admin/horarios', component: AdminHorariosComponent },
+  { path: 'admin/horarios-forms', component: AdminHorariosFormsComponent },
+  { path: 'admin/horarios-forms/:guid', component: AdminHorariosFormsComponent },
+  { path: 'admin/incluye', component: AdminIncluyeComponent },
+  { path: 'admin/incluye-forms', component: AdminIncluyeFormsComponent },
+  { path: 'admin/incluye-forms/:id', component: AdminIncluyeFormsComponent },
+  { path: 'admin/noincluye', component: AdminNoIncluyeComponent },
+  { path: 'admin/noincluye-forms', component: AdminNoIncluyeFormsComponent },
+  { path: 'admin/noincluye-forms/:id', component: AdminNoIncluyeFormsComponent },
+  { path: 'admin/imagen', component: AdminImagenComponent },
+  { path: 'admin/imagen-forms', component: AdminImagenFormsComponent },
+  { path: 'admin/imagen-forms/:id', component: AdminImagenFormsComponent },
+  { path: 'admin/tickets', component: AdminTicketsComponent },
+  { path: 'admin/tickets-forms', component: AdminTicketsFormsComponent },
+  { path: 'admin/tickets-forms/:id', component: AdminTicketsFormsComponent },
+
   { path: '**', redirectTo: '' }
 ];

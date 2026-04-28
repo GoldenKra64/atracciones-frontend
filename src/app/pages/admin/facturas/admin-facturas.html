@@ -1,0 +1,61 @@
+<div class="admin-page">
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin/dashboard" class="back-link">← Dashboard</a>
+      <div class="header-title">
+        <span class="header-emoji">🧾</span>
+        <div>
+          <h1>Facturas</h1>
+          <p class="header-subtitle">Historial de facturación y documentos financieros</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando facturas...</p>
+  </div>
+
+  <div class="error-state" *ngIf="error && !loading">
+    <span class="error-icon">⚠️</span>
+    <p>{{ error }}</p>
+    <button (click)="cargar()">Reintentar</button>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading && !error">
+    <div class="table-meta">
+      <span class="record-count">{{ facturas.length }} registro{{ facturas.length !== 1 ? 's' : '' }}</span>
+    </div>
+
+    <div class="empty-state" *ngIf="facturas.length === 0">
+      <span>🧾</span>
+      <p>No hay facturas registradas</p>
+    </div>
+
+    <table *ngIf="facturas.length > 0">
+      <thead>
+        <tr>
+          <th class="col-id">ID</th>
+          <th class="col-numero">Número</th>
+          <th class="col-fecha">Fecha Emisión</th>
+          <th class="col-total">Total</th>
+          <th class="col-canal">Canal</th>
+          <th class="col-estado">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let f of facturas" class="table-row">
+          <td class="col-id"><span class="id-badge">{{ f.id }}</span></td>
+          <td class="col-numero"><span class="nombre-text">{{ f.numero }}</span></td>
+          <td class="col-fecha">{{ f.fechaEmision | date:'shortDate' }}</td>
+          <td class="col-total">{{ f.total | currency }}</td>
+          <td class="col-canal">{{ f.origenCanal }}</td>
+          <td class="col-estado">
+            <span class="pais-badge">{{ f.estado }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="admin-dashboard">
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="topbar-brand">
+        <span class="brand-logo"><span class="gold">A</span>TRAXIA</span>
+        <span class="brand-sep">|</span>
+        <span class="brand-panel">Panel Admin</span>
+      </div>
+      <div class="topbar-right">
+        <div class="admin-info">
+          <span class="admin-avatar">👤</span>
+          <span class="admin-name">{{ adminUsername }}</span>
+        </div>
+        <button class="btn-logout" (click)="logout()">
+          🚪 Salir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="dashboard-main">
+    <div class="dash-header">
+      <div class="dash-header-text">
+        <p class="dash-eyebrow">Panel de Administración</p>
+        <h1 class="dash-title">¿Qué deseas gestionar hoy?</h1>
+        <p class="dash-subtitle">
+          Selecciona un módulo para comenzar a administrar la plataforma
+        </p>
+      </div>
+      <div class="dash-header-badge">
+        <span class="badge-icon">🛡️</span>
+        <span class="badge-text">Acceso verificado</span>
+      </div>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="cards-grid">
+      <div
+        *ngFor="let card of cards; let i = index"
+        class="dash-card"
+        [style.--card-color]="card.color"
+        [style.animation-delay]="(i * 80) + 'ms'"
+        (click)="navigateTo(card.route)"
+      >
+        <div class="card-glow"></div>
+        <div class="card-top">
+          <div class="card-emoji-main">{{ card.emoji }}</div>
+          <div class="card-emoji-accent">{{ card.accentEmoji }}</div>
+        </div>
+        <div class="card-body">
+          <h3 class="card-titulo">{{ card.titulo }}</h3>
+          <p class="card-desc">{{ card.descripcion }}</p>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    </div>
+
+    <p class="coming-soon">
+      🚧 &nbsp;Módulos en construcción — próximamente disponibles
+    </p>
+  </main>
+</div>

@@ -1,0 +1,142 @@
+<div class="admin-page">
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin/clientes" class="back-link">← Volver a Clientes</a>
+      <div class="header-title">
+        <span class="header-emoji">👥</span>
+        <div>
+          <h1>{{ isEdit ? 'Actualizar Cliente' : 'Crear Cliente' }}</h1>
+          <p class="header-subtitle">Completa el formulario para {{ isEdit ? 'actualizar el' : 'crear un nuevo' }} cliente.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" [class.visible]="toast.visible" [class.toast-success]="toast.type === 'success'" [class.toast-error]="toast.type === 'error'">
+    <span>{{ toast.type === 'success' ? '✅' : '❌' }}</span>
+    {{ toast.message }}
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <div class="form-wrapper" *ngIf="!loading">
+    
+    <div class="error-banner" *ngIf="error">
+      <span class="error-icon">⚠️</span>
+      {{ error }}
+    </div>
+
+    <div class="error-banner validation-errors" *ngIf="validationErrors.length > 0">
+      <span class="error-icon">⚠️</span>
+      <ul>
+        <li *ngFor="let err of validationErrors">{{ err }}</li>
+      </ul>
+    </div>
+
+    <form (ngSubmit)="guardar()" #clienteForm="ngForm" class="admin-form">
+      
+      <div class="form-group">
+        <label for="tipoIdentificacion">Tipo de Identificación <span class="required">*</span></label>
+        <select 
+          id="tipoIdentificacion" 
+          name="tipoIdentificacion" 
+          [(ngModel)]="payload.tipoIdentificacion" 
+          required
+          class="form-control"
+        >
+          <option value="CEDULA">CEDULA</option>
+          <option value="PASAPORTE">PASAPORTE</option>
+          <option value="RUC">RUC</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="numeroIdentificacion">Número de Identificación <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="numeroIdentificacion" 
+          name="numeroIdentificacion" 
+          [(ngModel)]="payload.numeroIdentificacion" 
+          required 
+          placeholder="Ej: 1753033933"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="nombres">Nombres <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="nombres" 
+          name="nombres" 
+          [(ngModel)]="payload.nombres" 
+          required 
+          placeholder="Ej: Juan Antonio"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="apellidos">Apellidos <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="apellidos" 
+          name="apellidos" 
+          [(ngModel)]="payload.apellidos" 
+          required 
+          placeholder="Ej: Pérez"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="correo">Correo Electrónico <span class="required">*</span></label>
+        <input 
+          type="email" 
+          id="correo" 
+          name="correo" 
+          [(ngModel)]="payload.correo" 
+          required 
+          placeholder="Ej: juan@correo.com"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input 
+          type="text" 
+          id="telefono" 
+          name="telefono" 
+          [(ngModel)]="payload.telefono" 
+          placeholder="Ej: 0987654321 (Opcional)"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="direccion">Dirección</label>
+        <input 
+          type="text" 
+          id="direccion" 
+          name="direccion" 
+          [(ngModel)]="payload.direccion" 
+          placeholder="Ej: Av. Principal 123 (Opcional)"
+          class="form-control"
+        />
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" routerLink="/admin/clientes" [disabled]="saving">Cancelar</button>
+        <button type="submit" class="btn-submit" [disabled]="saving || !clienteForm.form.valid">
+          <span *ngIf="!saving">{{ isEdit ? 'Actualizar Cliente' : 'Crear Cliente' }}</span>
+          <span *ngIf="saving">Guardando...</span>
+        </button>
+      </div>
+      
+    </form>
+  </div>
+</div>

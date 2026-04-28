@@ -1,0 +1,71 @@
+<div class="admin-page">
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin/imagen" class="back-link">← Volver a Imagenes</a>
+      <div class="header-title">
+        <span class="header-emoji">🖼️</span>
+        <div>
+          <h1>{{ isEdit ? 'Actualizar Imagen' : 'Crear Imagen' }}</h1>
+          <p class="header-subtitle">Completa el formulario para {{ isEdit ? 'actualizar la' : 'crear una nueva' }}
+            Imagen.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" [class.visible]="toast.visible" [class.toast-success]="toast.type === 'success'"
+    [class.toast-error]="toast.type === 'error'">
+    <span>{{ toast.type === 'success' ? '✅' : '❌' }}</span>
+    {{ toast.message }}
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando datos...</p>
+  </div>
+
+  <div class="form-wrapper" *ngIf="!loading">
+
+    <div class="error-banner" *ngIf="error">
+      <span class="error-icon">⚠️</span>
+      {{ error }}
+    </div>
+
+    <div class="error-banner validation-errors" *ngIf="validationErrors.length > 0">
+      <span class="error-icon">⚠️</span>
+      <ul>
+        <li *ngFor="let err of validationErrors">{{ err }}</li>
+      </ul>
+    </div>
+
+    <form (ngSubmit)="guardar()" #imagenForm="ngForm" class="admin-form">
+
+      <div class="form-group">
+        <label for="atraccionId">Atracción <span class="required">*</span></label>
+        <select id="atraccionId" name="atraccionId" [(ngModel)]="payload.atraccionId" required class="form-control">
+          <option *ngFor="let a of atracciones" [value]="a.id">{{ a.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="url">URL Imagen <span class="required">*</span></label>
+        <input type="text" id="url" name="url" [(ngModel)]="payload.url" required placeholder="Ej: imagen.jpg"
+          class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción <span class="required">*</span></label>
+        <input type="text" id="descripcion" name="descripcion" [(ngModel)]="payload.descripcion" required
+          placeholder="Ej: Montaña rusa" class="form-control" />
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" routerLink="/admin/imagen" [disabled]="saving">Cancelar</button>
+        <button type="submit" class="btn-submit" [disabled]="saving || !imagenForm.form.valid">
+          <span *ngIf="!saving">{{ isEdit ? 'Actualizar Imagen' : 'Crear Imagen' }}</span>
+          <span *ngIf="saving">Guardando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,461 @@
+// ── Variables ────────────────────────────────────────────────────────────────
+$gold:       #FFB432;
+$gold-dim:   rgba(255, 180, 50, 0.15);
+$gold-line:  rgba(255, 180, 50, 0.12);
+$surface:    rgba(255, 255, 255, 0.03);
+$border:     rgba(255, 255, 255, 0.07);
+$text-muted: rgba(255, 255, 255, 0.45);
+$red:        #FF5252;
+$red-dim:    rgba(255, 82, 82, 0.12);
+$green:      #34D399;
+$green-dim:  rgba(52, 211, 153, 0.1);
+
+// ── Page shell ───────────────────────────────────────────────────────────────
+.admin-page {
+  min-height: 100vh;
+  background: #03030A;
+  padding: 2.5rem 2.5rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+// ── Header ───────────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.back-link {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: $text-muted;
+  text-decoration: none;
+  transition: color 0.2s;
+  &:hover { color: $gold; }
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .header-emoji { font-size: 2rem; }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+    color: #fff;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .header-subtitle {
+    font-size: 0.75rem;
+    color: $text-muted;
+    letter-spacing: 1px;
+    margin-top: 0.2rem;
+  }
+}
+
+.btn-crear {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: $gold;
+  color: #03030A;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  white-space: nowrap;
+
+  .btn-icon { font-size: 1rem; font-weight: 400; }
+
+  &:hover {
+    background: #ffc85a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 180, 50, 0.3);
+  }
+}
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+.toast {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateX(20px);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  &.toast-success {
+    background: rgba(52, 211, 153, 0.12);
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: $green;
+  }
+
+  &.toast-error {
+    background: $red-dim;
+    border: 1px solid rgba(255, 82, 82, 0.3);
+    color: $red;
+  }
+}
+
+// ── Loading / Error ───────────────────────────────────────────────────────────
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 0;
+  gap: 1rem;
+  color: $text-muted;
+  font-size: 0.9rem;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid $gold-dim;
+  border-top-color: $gold;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 0;
+  gap: 0.75rem;
+  text-align: center;
+
+  .error-icon { font-size: 2rem; }
+  p { color: rgba(255, 100, 100, 0.8); font-size: 0.9rem; }
+
+  button {
+    margin-top: 0.5rem;
+    background: transparent;
+    border: 1px solid $gold-line;
+    color: $gold;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0.5rem 1.4rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover { background: $gold-dim; }
+  }
+}
+
+// ── Table wrapper ─────────────────────────────────────────────────────────────
+.table-wrapper {
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-meta {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid $border;
+
+  .record-count {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: $text-muted;
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5rem 0;
+  gap: 0.75rem;
+
+  span { font-size: 3rem; opacity: 0.3; }
+  p { font-size: 0.9rem; color: $text-muted; }
+
+  .btn-crear-empty {
+    margin-top: 0.5rem;
+    background: $gold-dim;
+    border: 1px solid rgba(255, 180, 50, 0.3);
+    color: $gold;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.2s;
+    &:hover { background: rgba(255, 180, 50, 0.25); }
+  }
+}
+
+// ── Table ─────────────────────────────────────────────────────────────────────
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead tr {
+  border-bottom: 1px solid $border;
+}
+
+th {
+  padding: 0.9rem 1.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: $text-muted;
+  text-align: left;
+}
+
+.table-row {
+  border-bottom: 1px solid $border;
+  transition: background 0.15s;
+
+  &:last-child { border-bottom: none; }
+  &:hover { background: rgba(255, 255, 255, 0.025); }
+}
+
+td {
+  padding: 1rem 1.5rem;
+  vertical-align: middle;
+}
+
+// Columnas específicas
+.col-id { width: 80px; }
+.col-acciones { width: 220px; }
+
+.id-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 24px;
+  padding: 0 0.5rem;
+  background: $gold-dim;
+  border: 1px solid rgba(255, 180, 50, 0.25);
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $gold;
+  font-family: monospace;
+}
+
+.nombre-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.pais-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid $border;
+  padding: 0.25rem 0.7rem;
+  border-radius: 3px;
+}
+
+// ── Action buttons ────────────────────────────────────────────────────────────
+.acciones-wrap {
+  display: flex;
+  gap: 0.6rem;
+}
+
+%btn-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 1px solid;
+  padding: 0.4rem 0.85rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-editar {
+  @extend %btn-action;
+  background: transparent;
+  border-color: rgba(74, 158, 255, 0.3);
+  color: #4A9EFF;
+
+  &:hover {
+    background: rgba(74, 158, 255, 0.1);
+    border-color: rgba(74, 158, 255, 0.6);
+    transform: translateY(-1px);
+  }
+}
+
+.btn-eliminar {
+  @extend %btn-action;
+  background: transparent;
+  border-color: rgba(255, 82, 82, 0.3);
+  color: $red;
+
+  &:hover {
+    background: $red-dim;
+    border-color: rgba(255, 82, 82, 0.6);
+    transform: translateY(-1px);
+  }
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-box {
+  background: #0e0e18;
+  border: 1px solid rgba(255, 82, 82, 0.2);
+  border-radius: 10px;
+  padding: 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.modal-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+.modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.modal-desc {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: $text-muted;
+  margin-bottom: 2rem;
+
+  strong { color: #fff; }
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.btn-cancel {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid $border;
+  color: $text-muted;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) { border-color: rgba(255,255,255,0.25); color: #fff; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+}
+
+.btn-confirm-delete {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: $red;
+  border: none;
+  color: #fff;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) { background: #ff3333; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+}
+
+@media (max-width: 640px) {
+  .admin-page { padding: 1.5rem 1rem 4rem; }
+  .page-header { flex-direction: column; align-items: flex-start; }
+  th, td { padding: 0.75rem 1rem; }
+  .col-id { display: none; }
+}

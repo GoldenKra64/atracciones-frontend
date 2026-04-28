@@ -1,0 +1,92 @@
+<div class="admin-page">
+  <div class="page-header">
+    <div class="header-left">
+      <a routerLink="/admin/dashboard" class="back-link">← Dashboard</a>
+      <div class="header-title">
+        <span class="header-emoji">🖼️</span>
+        <div>
+          <h1>Imagen</h1>
+          <p class="header-subtitle">Gestión de imágenes de las atracciones</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn-crear" (click)="irACrear()">
+      <span class="btn-icon">+</span> Nueva imagen
+    </button>
+  </div>
+
+  <div class="toast" [class.visible]="toast.visible" [class.toast-success]="toast.type === 'success'"
+    [class.toast-error]="toast.type === 'error'">
+    <span>{{ toast.type === 'success' ? '✅' : '❌' }}</span>
+    {{ toast.message }}
+  </div>
+
+  <div class="loading-state" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando imágenes...</p>
+  </div>
+
+  <div class="error-state" *ngIf="error && !loading">
+    <span class="error-icon">⚠️</span>
+    <p>{{ error }}</p>
+    <button (click)="cargar()">Reintentar</button>
+  </div>
+
+  <div class="table-wrapper" *ngIf="!loading && !error">
+    <div class="table-meta">
+      <span class="record-count">{{ imagenes.length }} registro{{ imagenes.length !== 1 ? 's' : '' }}</span>
+    </div>
+
+    <div class="empty-state" *ngIf="imagenes.length === 0">
+      <span>📷</span>
+      <p>No hay imágenes registrados</p>
+      <button class="btn-crear-empty" (click)="irACrear()">Crear primera imagen</button>
+    </div>
+
+    <table *ngIf="imagenes.length > 0">
+      <thead>
+        <tr>
+          <th class="col-id">ID</th>
+          <th class="col-nombre">Atraccion ID</th>
+          <th class="col-nombre">Descripcion</th>
+          <th class="col-url">URL</th>
+          <th class="col-acciones">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let h of imagenes" class="table-row">
+          <td class="col-id"><span class="id-badge">{{ h.id }}</span></td>
+          <td class="col-nombre"><span class="nombre-text">{{ h.atraccionId }}</span></td>
+          <td class="col-fecha">{{ h.descripcion }}</td>
+          <td class="col-hora">{{ h.url }}</td>
+          <td class="col-acciones">
+            <div class="acciones-wrap">
+              <button class="btn-editar" (click)="irAEditar(h.id)" title="Actualizar imagen">✏️
+                Editar</button>
+              <button class="btn-eliminar" (click)="abrirConfirmDelete(h)" title="Eliminar imagen">🗑️
+                Eliminar</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="modal-overlay" *ngIf="confirmDelete.open" (click)="cerrarConfirmDelete()">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+      <div class="modal-icon">🗑️</div>
+      <h3 class="modal-title">Eliminar imagen</h3>
+      <p class="modal-desc">
+        ¿Estás seguro de que deseas eliminar esta imagen?
+        Esta acción no se puede deshacer.
+      </p>
+      <div class="modal-actions">
+        <button class="btn-cancel" (click)="cerrarConfirmDelete()" [disabled]="confirmDelete.loading">Cancelar</button>
+        <button class="btn-confirm-delete" (click)="confirmarEliminar()" [disabled]="confirmDelete.loading">
+          <span *ngIf="!confirmDelete.loading">Eliminar</span>
+          <span *ngIf="confirmDelete.loading">Eliminando...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
