@@ -28,14 +28,10 @@
       <!-- Info principal -->
       <section class="info-grid">
         <div class="info-main">
-          <!-- TABS -->
-          <div class="tabs">
-            <button class="tab-btn" [class.active]="activeTab === 'info'" (click)="activeTab = 'info'">Información</button>
-            <button class="tab-btn" [class.active]="activeTab === 'resenas'" (click)="activeTab = 'resenas'">Reseñas</button>
-          </div>
+
 
           <!-- CONTENIDO INFO -->
-          <div class="tab-content" *ngIf="activeTab === 'info'">
+          <div class="tab-content">
             <h1 class="detalle-titulo">{{ atraccion.nombre }}</h1>
             <p class="detalle-desc">{{ atraccion.descripcion }}</p>
 
@@ -63,28 +59,7 @@
           </div>
           </div> <!-- End Tab Info -->
 
-          <!-- CONTENIDO RESEÑAS -->
-          <div class="tab-content" *ngIf="activeTab === 'resenas'">
-             <div class="resenas-list">
-               <div *ngIf="loadingResenas" class="loading-state">
-                 <div class="spinner"></div>
-               </div>
-               <div *ngIf="!loadingResenas && resenas.length === 0" class="empty-state">
-                 <p>No hay reseñas para esta atracción todavía.</p>
-               </div>
-               <div class="resena-item" *ngFor="let r of resenas">
-                 <div class="resena-header">
-                   <span class="stars">
-                     <ng-container *ngFor="let s of [1,2,3,4,5]">
-                        <span class="star" [class.filled]="s <= r.calificacion">★</span>
-                     </ng-container>
-                   </span>
-                   <span class="resena-fecha">{{ r.fecha | date:'dd/MM/yyyy' }}</span>
-                 </div>
-                 <p class="resena-comentario" *ngIf="r.comentario">{{ r.comentario }}</p>
-               </div>
-             </div>
-          </div>
+
         </div>
 
         <!-- Sidebar -->

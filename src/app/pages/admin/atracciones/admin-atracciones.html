@@ -1,0 +1,92 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <div class="header-content">
+      <a routerLink="/admin/dashboard" style="color: #fff;" class="back-link">← Dashboard</a>
+      <h1 style="text-align: center; font-size: 2rem; color: #fff;">Gestión de Atracciones</h1>
+      <p style="color: #fff;">Administra el catálogo de experiencias y tours</p>
+    </div>
+    <button class="btn-primary" (click)="irACrear()">
+      <i class="fas fa-plus"></i> Nueva Atracción
+    </button>
+  </div>
+
+  <div class="admin-card table-card">
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Cargando atracciones...</p>
+    </div>
+
+    <div *ngIf="error" class="error-state">
+      <i class="fas fa-exclamation-circle"></i>
+      <p>{{ error }}</p>
+      <button class="btn-secondary" (click)="cargar()">Reintentar</button>
+    </div>
+
+    <div class="table-responsive" *ngIf="!loading && !error">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Ubicación</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+            <th>Cupos</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of atracciones">
+            <td class="font-bold">{{ item.nombre }}</td>
+            <td>{{ item.ciudad }}, {{ item.pais }}</td>
+            <td>{{ item.tipo_nombre }}</td>
+            <td>{{ item.precio_desde | currency: item.moneda }}</td>
+            <td>{{ item.cupos_disponibles }}</td>
+            <td>
+              <span class="badge" [ngClass]="item.disponible ? 'badge-success' : 'badge-error'">
+                {{ item.disponible ? 'Disponible' : 'No Disponible' }}
+              </span>
+            </td>
+            <td class="actions">
+              <button class="btn-icon" (click)="irAEditar(item.id)" title="Editar">
+                <i class="fas fa-edit">✏️</i>
+              </button>
+              <button class="btn-icon btn-icon-danger" (click)="abrirConfirmDelete(item)" title="Eliminar">
+                <i class="fas fa-trash">🗑️</i>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="atracciones.length === 0">
+            <td colspan="7" class="empty-state">No se encontraron atracciones.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button [disabled]="pageNumber === 1" (click)="cambiarPagina(pageNumber - 1)">Anterior</button>
+      <span>Página {{ pageNumber }} de {{ totalPages }}</span>
+      <button [disabled]="pageNumber === totalPages" (click)="cambiarPagina(pageNumber + 1)">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Confirmación -->
+<div class="modal-overlay" *ngIf="confirmDelete.open">
+  <div class="modal-card">
+    <h3>Confirmar Eliminación</h3>
+    <p>¿Estás seguro de que deseas eliminar la atracción <strong>{{ confirmDelete.atraccion?.nombre }}</strong>?</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" (click)="cerrarConfirmDelete()" [disabled]="confirmDelete.loading">Cancelar</button>
+      <button class="btn-danger" (click)="confirmarEliminar()" [disabled]="confirmDelete.loading">
+        <span *ngIf="!confirmDelete.loading">Eliminar</span>
+        <span *ngIf="confirmDelete.loading">Eliminando...</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast" [ngClass]="toast.type" *ngIf="toast.visible">
+  {{ toast.message }}
+</div>

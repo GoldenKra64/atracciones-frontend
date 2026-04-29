@@ -1,0 +1,76 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <div class="header-content">
+      <a routerLink="/admin/dashboard" style="color: #fff;" class="back-link">← Dashboard</a>
+      <h1 style="text-align: center; font-size: 2rem; color: #fff;">Gestión de Reservas</h1>
+      <p style="color: #fff;">Administra las reservas del sistema</p>
+    </div>
+    <button class="btn-primary" (click)="irACrear()">
+      <i class="fas fa-plus"></i> Nueva Reserva
+    </button>
+  </div>
+
+  <div class="admin-card table-card">
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Cargando reservas...</p>
+    </div>
+
+    <div *ngIf="error" class="error-state">
+      <i class="fas fa-exclamation-circle"></i>
+      <p>{{ error }}</p>
+      <button class="btn-secondary" (click)="cargar()">Reintentar</button>
+    </div>
+
+    <div class="table-responsive" *ngIf="!loading && !error">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Atracción</th>
+            <th>Fecha</th>
+            <th>Horario</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of reservas">
+            <td class="font-bold">{{ item.rev_codigo }}</td>
+            <td>{{ item.atraccion_nombre || 'N/A' }}</td>
+            <td>{{ item.hor_fecha }}</td>
+            <td>{{ item.hor_hora_inicio }} - {{ item.hor_hora_fin }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'badge-warning': item.rev_estado === 'PEN',
+                'badge-success': item.rev_estado === 'APR',
+                'badge-error': item.rev_estado === 'CAN'
+              }">
+                {{ item.rev_estado }}
+              </span>
+            </td>
+            <td>{{ item.rev_total | currency: item.moneda }}</td>
+            <td class="actions">
+              <button class="btn-icon" (click)="irAEditar(item.rev_guid)" title="Editar">
+                <i class="fas fa-edit">✏️</i>
+              </button>
+              <button *ngIf="item.rev_estado === 'PEN'" class="btn-success" (click)="aprobarReserva(item.rev_guid)" [disabled]="approving === item.rev_guid" title="Aprobar">
+                <span *ngIf="approving !== item.rev_guid">Aprobar ✔️</span>
+                <span *ngIf="approving === item.rev_guid">Aprobando...</span>
+              </button>
+            </td>
+          </tr>
+          <tr *ngIf="reservas.length === 0">
+            <td colspan="7" class="empty-state">No se encontraron reservas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast" [ngClass]="toast.type" *ngIf="toast.visible">
+  {{ toast.message }}
+</div>

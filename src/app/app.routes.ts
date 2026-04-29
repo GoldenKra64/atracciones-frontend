@@ -21,6 +21,10 @@ import { AdminImagenFormsComponent } from './pages/admin/imagen-forms/admin-imag
 import { AdminImagenComponent } from './pages/admin/imagen/admin-imagen';
 import { AdminTicketsComponent } from './pages/admin/tickets/admin-tickets';
 import { AdminTicketsFormsComponent } from './pages/admin/tickets-forms/admin-tickets-forms';
+import { AdminAtraccionesComponent } from './pages/admin/atracciones/admin-atracciones';
+import { AdminAtraccionesFormsComponent } from './pages/admin/atracciones-forms/admin-atracciones-forms';
+import { AdminReservaComponent } from './pages/admin/reserva/admin-reserva';
+import { AdminReservaFormsComponent } from './pages/admin/reserva-forms/admin-reserva-forms';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -52,6 +56,12 @@ export const routes: Routes = [
   { path: 'admin/tickets', component: AdminTicketsComponent },
   { path: 'admin/tickets-forms', component: AdminTicketsFormsComponent },
   { path: 'admin/tickets-forms/:id', component: AdminTicketsFormsComponent },
+  { path: 'admin/atracciones', component: AdminAtraccionesComponent },
+  { path: 'admin/atracciones-forms', component: AdminAtraccionesFormsComponent },
+  { path: 'admin/atracciones-forms/:id', component: AdminAtraccionesFormsComponent },
+  { path: 'admin/reserva', component: AdminReservaComponent },
+  { path: 'admin/reserva-forms', component: AdminReservaFormsComponent },
+  { path: 'admin/reserva-forms/:guid', component: AdminReservaFormsComponent },
 
   { path: '**', redirectTo: '' }
 ];

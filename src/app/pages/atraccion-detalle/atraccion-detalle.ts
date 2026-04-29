@@ -18,9 +18,6 @@ export class AtraccionDetalleComponent implements OnInit {
   error = '';
   selectedImg = 0;
 
-  activeTab: 'info' | 'resenas' = 'info';
-  resenas: ResenaItem[] = [];
-  loadingResenas = false;
 
   horarioSeleccionado: any = null;
   cantidades: { [tckGuid: string]: number } = {};
@@ -46,7 +43,6 @@ export class AtraccionDetalleComponent implements OnInit {
     this.error = '';
     try {
       this.atraccion = await this.svc.getAtraccion(id);
-      this.cargarResenas(id);
     } catch {
       this.error = 'No se pudo cargar los detalles de esta atracción.';
     } finally {
@@ -55,17 +51,6 @@ export class AtraccionDetalleComponent implements OnInit {
     }
   }
 
-  async cargarResenas(id: string) {
-    this.loadingResenas = true;
-    try {
-      this.resenas = await this.svc.getResenas(id);
-    } catch (e) {
-      console.error('Error cargando reseñas', e);
-    } finally {
-      this.loadingResenas = false;
-      this.cdr.detectChanges();
-    }
-  }
 
   seleccionarHorario(h: any) {
     this.horarioSeleccionado = h;
@@ -124,6 +109,8 @@ export class AtraccionDetalleComponent implements OnInit {
       this.showModal = true;
       this.cdr.detectChanges();
     }
+
+    this.cargar(this.atraccion?.id || '');
   }
 
   cerrarModal() {

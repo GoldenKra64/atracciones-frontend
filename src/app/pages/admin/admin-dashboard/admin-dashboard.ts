@@ -54,7 +54,7 @@ export class AdminDashboardComponent implements OnInit {
       titulo: 'Reservas',
       descripcion: 'Revisa y gestiona todas las reservas activas y pasadas',
       color: '#34D399',
-      route: '/admin/reservas'
+      route: '/admin/reserva'
     },
     {
       emoji: '🧾',

@@ -1,0 +1,169 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <div class="header-content">
+      <h1>{{ isEdit ? 'Editar' : 'Nueva' }} Atracción</h1>
+      <p>{{ isEdit ? 'Actualiza la información de la atracción' : 'Completa el formulario para crear una nueva atracción' }}</p>
+    </div>
+    <button class="btn-secondary" routerLink="/admin/atracciones">
+      <i class="fas fa-arrow-left"></i> Volver
+    </button>
+  </div>
+
+  <div class="admin-card form-card">
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner"></div>
+      <p>Cargando información...</p>
+    </div>
+
+    <form (submit)="guardar()" *ngIf="!loading">
+      <div class="form-grid">
+        <!-- Información Básica -->
+        <div class="form-section full-width">
+          <h3>Información General</h3>
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="nombre">Nombre de la Atracción *</label>
+              <input type="text" id="nombre" name="nombre" [(ngModel)]="payload.nombre" required placeholder="Ej: Tour Galápagos">
+            </div>
+            <div class="form-group">
+              <label for="destino">Destino *</label>
+              <select id="destino" name="destino" [(ngModel)]="payload.destinoId" required>
+                <option [value]="0" disabled>Selecciona un destino</option>
+                <option *ngFor="let d of destinos" [value]="d.id">{{ d.nombre }}, {{ d.pais }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" [(ngModel)]="payload.descripcion" rows="4" placeholder="Describe la experiencia..."></textarea>
+          </div>
+        </div>
+
+        <!-- Detalles Logísticos -->
+        <div class="form-section">
+          <h3>Detalles Logísticos</h3>
+          <div class="form-group">
+            <label for="direccion">Dirección *</label>
+            <input type="text" id="direccion" name="direccion" [(ngModel)]="payload.direccion">
+          </div>
+          <div class="form-group">
+            <label for="puntoEncuentro">Punto de Encuentro</label>
+            <input type="text" id="puntoEncuentro" name="puntoEncuentro" [(ngModel)]="payload.puntoEncuentro">
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="duracion">Duración (minutos)</label>
+              <input type="number" id="duracion" name="duracion" [(ngModel)]="payload.duracionMinutos">
+            </div>
+            <div class="form-group">
+              <label for="moneda">Moneda</label>
+              <select id="moneda" name="moneda" [(ngModel)]="payload.moneda">
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="precio">Precio de Referencia</label>
+            <input type="number" id="precio" name="precio" [(ngModel)]="payload.precioReferencia">
+          </div>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" name="transporte" [(ngModel)]="payload.incluyeTransporte">
+              Incluye Transporte
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" name="acompaniante" [(ngModel)]="payload.incluyeAcompaniante">
+              Incluye Acompañante
+            </label>
+          </div>
+        </div>
+
+        <!-- Clasificación y Etiquetas -->
+        <div class="form-section">
+          <h3>Clasificación y Relaciones</h3>
+          
+          <div class="multi-select-group">
+            <label>Categorías</label>
+            <div class="chips-container">
+              <span class="chip" *ngFor="let c of categorias" 
+                    [class.active]="isSelected(payload.categoriaIds, c.id)"
+                    (click)="toggleItem(payload.categoriaIds, c.id)">
+                {{ c.nombre }}
+              </span>
+            </div>
+          </div>
+
+          <div class="multi-select-group">
+            <label>Idiomas</label>
+            <div class="chips-container">
+              <span class="chip" *ngFor="let i of idiomas" 
+                    [class.active]="isSelected(payload.idiomaIds, i.id)"
+                    (click)="toggleItem(payload.idiomaIds, i.id)">
+                {{ i.nombre }}
+              </span>
+            </div>
+          </div>
+
+          <div class="multi-select-group">
+            <label>Etiquetas (Tags)</label>
+            <div class="chips-container">
+              <span class="chip" *ngFor="let t of tags" 
+                    [class.active]="isSelected(payload.tagIds, t.id)"
+                    (click)="toggleItem(payload.tagIds, t.id)">
+                {{ t.nombre }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inclusiones y Exclusiones -->
+        <div class="form-section full-width grid-2">
+          <div class="multi-select-group">
+            <label>¿Qué incluye?</label>
+            <div class="checkbox-list">
+              <div *ngFor="let item of incluies" class="checkbox-item">
+                <input type="checkbox" [id]="'inc' + item.id" 
+                       [checked]="isSelected(payload.incluyeIds, item.id)"
+                       (change)="toggleItem(payload.incluyeIds, item.id)">
+                <label [for]="'inc' + item.id">{{ item.descripcion }}</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="multi-select-group">
+            <label>¿Qué NO incluye?</label>
+            <div class="checkbox-list">
+              <div *ngFor="let item of noIncluies" class="checkbox-item">
+                <input type="checkbox" [id]="'noinc' + item.id" 
+                       [checked]="isSelected(payload.noIncluyeIds, item.id)"
+                       (change)="toggleItem(payload.noIncluyeIds, item.id)">
+                <label [for]="'noinc' + item.id">{{ item.descripcion }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-errors" *ngIf="error || validationErrors.length > 0">
+        <p class="error-msg" *ngIf="error">{{ error }}</p>
+        <ul *ngIf="validationErrors.length > 0">
+          <li *ngFor="let err of validationErrors">{{ err }}</li>
+        </ul>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" routerLink="/admin/atracciones">Cancelar</button>
+        <button type="submit" class="btn-primary" [disabled]="saving">
+          <span *ngIf="!saving">{{ isEdit ? 'Guardar Cambios' : 'Crear Atracción' }}</span>
+          <span *ngIf="saving">Guardando...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast Notifications -->
+<div class="toast" [ngClass]="toast.type" *ngIf="toast.visible">
+  {{ toast.message }}
+</div>
