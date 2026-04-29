@@ -24,12 +24,12 @@ export class IngresarComponent {
     login: '', password: '',
     rolIds: [1],
     cliente: {
-      usuarioId: 0, tipoIdentificacion: 'CC', numeroIdentificacion: '',
+      usuarioId: 0, tipoIdentificacion: 'CEDULA', numeroIdentificacion: '',
       correo: '', nombres: '', apellidos: '', telefono: '', direccion: ''
     }
   };
 
-  constructor(private auth: AuthService, private router: Router, private cdRef: ChangeDetectorRef) {}
+  constructor(private auth: AuthService, private router: Router, private cdRef: ChangeDetectorRef) { }
 
   async onLogin() {
     if (!this.login.login || !this.login.password) {
@@ -46,12 +46,20 @@ export class IngresarComponent {
 
   async onRegistro() {
     this.loading = true; this.mensaje = '';
-    const res = await this.auth.register(this.registro);
+    const res: any = await this.auth.register(this.registro);
     this.loading = false;
     this.esError = !res.success;
-    this.mensaje = res.message;
-    if (res.success) this.tab = 'login';
 
+    if (res.success) {
+      this.mensaje = res.message;
+      this.tab = 'login';
+    } else {
+      let errorMsg = res.message;
+      if (res.errors && res.errors.length > 0) {
+        errorMsg += ` ${res.errors.join(' | ')}`;
+      }
+      this.mensaje = errorMsg;
+    }
     this.cdRef.detectChanges();
   }
 }

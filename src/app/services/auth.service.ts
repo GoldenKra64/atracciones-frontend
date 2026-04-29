@@ -33,15 +33,16 @@ export class AuthService {
   async register(payload: any) {
     try {
       const res = await api.post('/Auth', payload);
-      return res.data?.success
+      return res.data?.success || res.data?.Success
         ? { success: true, message: 'Cuenta creada. Ya puedes ingresar.' }
-        : { success: false, message: res.data?.message || 'Error al registrarse' };
+        : { success: false, message: res.data?.message || res.data?.Message || 'Error al registrarse', errors: res.data?.errors || res.data?.Errors };
     } catch (err: any) {
-      return { success: false, message: err.response?.data?.message || 'Error al registrarse' };
+      const data = err.response?.data;
+      return { success: false, message: data?.message || data?.Message || 'Error al registrarse', errors: data?.errors || data?.Errors };
     }
   }
 
-  async adminLogin(payload: { login: string, password: string } ): Promise<{ success: boolean; message: string }> {
+  async adminLogin(payload: { login: string, password: string }): Promise<{ success: boolean; message: string }> {
     try {
       const res = await api.post('/Auth/login-admin', payload);
       const data = res.data?.data;
@@ -55,19 +56,19 @@ export class AuthService {
     } catch (err: any) {
       if (err.response?.status === 403) {
         return { success: false, message: 'Acceso denegado: no tienes permisos de administrador' };
-      } 
+      }
       return { success: false, message: 'No se pudo validar el acceso de administrador' };
     }
   }
- 
+
   get isAdmin(): boolean {
     return !!localStorage.getItem('atraxia_admin_token');
   }
- 
+
   get adminUsername(): string {
     return localStorage.getItem('atraxia_admin_user') || '';
   }
- 
+
   adminLogout(): void {
     localStorage.removeItem('atraxia_admin_token');
     localStorage.removeItem('atraxia_admin_user');
