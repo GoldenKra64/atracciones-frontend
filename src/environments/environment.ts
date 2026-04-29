@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7272/api/v1'
+  apiUrl: import.meta.env['NG_APP_API_URL']
 };
