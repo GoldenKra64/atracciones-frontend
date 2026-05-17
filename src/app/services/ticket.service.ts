@@ -47,12 +47,12 @@ function adminApi() {
 @Injectable({ providedIn: 'root' })
 export class TicketService {
   async getAll(): Promise<Ticket[]> {
-    const res = await adminApi().get<ApiResponse<Ticket[]>>('/Ticket');
+    const res = await adminApi().get<ApiResponse<Ticket[]>>('/tickets');
     return res.data.data;
   }
 
   async getById(id: number): Promise<Ticket> {
-    const res = await adminApi().get<ApiResponse<Ticket>>(`/Ticket/${id}`);
+    const res = await adminApi().get<ApiResponse<Ticket>>(`/tickets/${id}`);
     return res.data.data;
   }
 
