@@ -22,7 +22,7 @@ export class IngresarComponent {
 
   registro = {
     login: '', password: '',
-    rolIds: [1],
+    rolIds: [2],
     cliente: {
       usuarioId: 0, tipoIdentificacion: 'CEDULA', numeroIdentificacion: '',
       correo: '', nombres: '', apellidos: '', telefono: '', direccion: ''

@@ -57,17 +57,17 @@ export class TicketService {
   }
 
   async create(payload: TicketPayload): Promise<ApiResponse<any>> {
-    const res = await adminApi().post<ApiResponse<any>>('/Ticket', payload);
+    const res = await adminApi().post<ApiResponse<any>>('/tickets', payload);
     return res.data;
   }
 
   async update(id: number, payload: TicketPayload): Promise<ApiResponse<any>> {
-    const res = await adminApi().put<ApiResponse<any>>(`/Ticket/${id}`, payload);
+    const res = await adminApi().put<ApiResponse<any>>(`/tickets/${id}`, payload);
     return res.data;
   }
 
   async delete(id: number): Promise<ApiResponse<any>> {
-    const res = await adminApi().delete<ApiResponse<any>>(`/Ticket/${id}`);
+    const res = await adminApi().delete<ApiResponse<any>>(`/tickets/${id}`);
     return res.data;
   }
 

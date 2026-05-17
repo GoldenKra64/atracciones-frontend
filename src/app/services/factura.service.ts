@@ -34,7 +34,7 @@ function adminApi() {
 @Injectable({ providedIn: 'root' })
 export class FacturaService {
   async getAllAdmin(): Promise<FacturaAdmin[]> {
-    const res = await adminApi().get<ApiResponse<FacturaAdmin[]>>('/Factura/all');
+    const res = await adminApi().get<ApiResponse<FacturaAdmin[]>>('/facturas/all');
     return res.data.data;
   }
 }
